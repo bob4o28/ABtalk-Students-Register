@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="#FFFFFEDA">
-        <StackPanel x:Name="TopMenu" Margin="0,0,0,382" Background="#FFECD019">
+        <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="50">
             <!-- Existing content in TopMenu -->
         </StackPanel>
         <StackPanel x:Name="RegistrationPanel" Margin="10,50,10,10" VerticalAlignment="Top">

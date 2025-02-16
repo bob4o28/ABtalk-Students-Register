@@ -6,7 +6,17 @@
         xmlns:local="clr-namespace:ABtalk_Students_Register"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="#FFFFFEDA">
+        <StackPanel x:Name="TopMenu" Margin="0,0,0,382" Background="#FFECD019">
+            <!-- Existing content in TopMenu -->
+        </StackPanel>
+        <StackPanel x:Name="RegistrationPanel" Margin="10,50,10,10" VerticalAlignment="Top">
+            <TextBlock Text="First Name:" Margin="0,10,0,0"/>
+            <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0"/>
+            <TextBlock Text="Middle Name:" Margin="0,10,0,0"/>
+            <TextBox x:Name="MiddleNameTextBox" Width="200" Margin="0,5,0,0"/>
+            <TextBlock Text="Last Name:" Margin="0,10,0,0"/>
+            <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>

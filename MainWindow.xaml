@@ -5,18 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ABtalk_Students_Register"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="StudentRegister" Height="450" Width="800">
     <Grid Background="#FFFFFEDA">
         <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="50">
             <!-- Existing content in TopMenu -->
         </StackPanel>
-        <StackPanel x:Name="RegistrationPanel" Margin="10,50,10,10" VerticalAlignment="Top">
-            <TextBlock Text="First Name:" Margin="0,10,0,0"/>
-            <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0"/>
-            <TextBlock Text="Middle Name:" Margin="0,10,0,0"/>
-            <TextBox x:Name="MiddleNameTextBox" Width="200" Margin="0,5,0,0"/>
-            <TextBlock Text="Last Name:" Margin="0,10,0,0"/>
-            <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0"/>
+        <StackPanel x:Name="RegistrationPanelNames" Margin="10,55,417,0" VerticalAlignment="Top" Height="369">
+            <!-- Names of the student -->
+            <TextBlock Text="First Name:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
+            <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
+            <TextBlock Text="Middle Name:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
+            <TextBox x:Name="MiddleNameTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
+            <TextBlock Text="Last Name:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
+            <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
+            <!-- School -->
+            <TextBlock Text="School:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
+            <TextBox x:Name="SchoolTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
+
         </StackPanel>
     </Grid>
 </Window>

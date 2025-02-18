@@ -21,7 +21,18 @@
             <!-- School -->
             <TextBlock Text="School:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
             <TextBox x:Name="SchoolTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
-
+            <!-- Class -->
+            <TextBlock Text="Class:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
+            <ComboBox x:Name="ClassComboBox" Width="55" HorizontalAlignment="Left">
+                <ComboBoxItem Content="5"/>
+                <ComboBoxItem Content="6"/>
+                <ComboBoxItem Content="7"/>
+                <ComboBoxItem Content="8"/>
+                <ComboBoxItem Content="9"/>
+                <ComboBoxItem Content="10"/>
+                <ComboBoxItem Content="11"/>
+                <ComboBoxItem Content="12"/>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

@@ -10,7 +10,7 @@
         <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="50">
             <!-- Existing content in TopMenu -->
         </StackPanel>
-        <StackPanel x:Name="RegistrationPanelNames" Margin="10,55,417,0" VerticalAlignment="Top" Height="369">
+        <StackPanel x:Name="RegistrationPanelNames" Margin="10,55,584,0" VerticalAlignment="Top" Height="322">
             <!-- Names of the student -->
             <TextBlock Text="First Name:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
             <TextBox x:Name="FirstNameTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
@@ -33,6 +33,8 @@
                 <ComboBoxItem Content="11"/>
                 <ComboBoxItem Content="12"/>
             </ComboBox>
+            <Button Content="Button" Width="84" HorizontalAlignment="Left" Margin="9,10,0,0"/>
+            <Button Content="Button" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

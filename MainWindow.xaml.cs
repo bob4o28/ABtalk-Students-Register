@@ -24,5 +24,10 @@ namespace ABtalk_Students_Register
         {
             InitializeComponent();
         }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

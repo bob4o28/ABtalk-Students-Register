@@ -36,7 +36,7 @@
                 <ComboBoxItem Content="12"/>
             </ComboBox>
             <Button x:Name="btnCancle" Content="Cancle" Width="84" HorizontalAlignment="Left" Margin="9,10,0,0" Click="btnCancle_Click"/>
-            <Button x:Name="btnSave" Content="Save" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0"/>
+            <Button x:Name="btnSave" Content="Save" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0" Click="btnSave_Click"/>
             <!-- GUI -->
 
         </StackPanel>

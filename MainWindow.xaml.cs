@@ -25,11 +25,20 @@ namespace ABtalk_Students_Register
             InitializeComponent();
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void btnCancle_Click(object sender, RoutedEventArgs e)
         {
-
+            FirstNameTextBox.Text = "";
+            MiddleNameTextBox.Text = "";
+            LastNameTextBox.Text = "";
+            SchoolTextBox.Text = "";
+            ClassComboBox.SelectedIndex = -1;
         }
     }
+
+
+
+
+    //Textbox Helper Class for gray label text
     public class TextBoxHelper
     {
         public static readonly DependencyProperty PlaceholderProperty =

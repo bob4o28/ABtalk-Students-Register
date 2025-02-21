@@ -22,7 +22,14 @@
             <TextBox x:Name="LastNameTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
             <!-- School -->
             <TextBlock Text="School:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
-            <TextBox x:Name="SchoolTextBox" Width="200" Margin="0,5,0,0" HorizontalAlignment="Left" Height="18"/>
+            <ComboBox x:Name="SchoolComboBox" Width="199" HorizontalAlignment="Left">
+                <ComboBoxItem Content="МГ &quot;Баба Тонка&quot;"/>
+                <ComboBoxItem Content="School 2"/>
+                <ComboBoxItem Content="School 3"/>
+                <ComboBoxItem Content="School 4"/>
+                <ComboBoxItem Content="School 5"/>
+                <ComboBoxItem Content="School 6"/>
+            </ComboBox>
             <!-- Class -->
             <TextBlock Text="Class:" Margin="0,10,0,0" Height="16" Width="100" HorizontalAlignment="Left"/>
             <ComboBox x:Name="ClassComboBox" Width="55" HorizontalAlignment="Left">

@@ -32,26 +32,37 @@ namespace ABtalk_Students_Register
             FirstNameTextBox.Text = "";
             MiddleNameTextBox.Text = "";
             LastNameTextBox.Text = "";
-            SchoolTextBox.Text = "";
+            SchoolComboBox.SelectedIndex = -1;
             ClassComboBox.SelectedIndex = -1;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            string sql = "INSERT INTO students VALUES (@idStudents, @FirstName, @MidName, @LastName, @School, @Class)";
+            if (FirstNameTextBox.Text == "" || LastNameTextBox.Text == "" || SchoolComboBox.SelectedIndex == -1 || ClassComboBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please fill all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            string sql = "INSERT INTO students(FirstName, MidName, LastName, School, Class, RegTime) VALUES (@FirstName, @MidName, @LastName, @School, @Class, @RegTime)";
             MySqlConnection con = dbABtalk.GetConnection();
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.CommandType = CommandType.Text;
-            cmd.Parameters.Add("@idStudents", MySqlDbType.Int64).Value = null;
+            //cmd.Parameters.Add("@idStudents", MySqlDbType.Int32).Value = null;
             cmd.Parameters.Add("@FirstName", MySqlDbType.VarChar).Value = FirstNameTextBox.Text;
             cmd.Parameters.Add("@MidName", MySqlDbType.VarChar).Value = MiddleNameTextBox.Text;
             cmd.Parameters.Add("@LastName", MySqlDbType.VarChar).Value = LastNameTextBox.Text;
-            cmd.Parameters.Add("@School", MySqlDbType.VarChar).Value = SchoolTextBox.Text;
-            cmd.Parameters.Add("@Class", MySqlDbType.VarChar).Value = ClassComboBox.SelectedValue.ToString();
+            cmd.Parameters.Add("@School", MySqlDbType.VarChar).Value = SchoolComboBox.SelectionBoxItem.ToString();
+            cmd.Parameters.Add("@Class", MySqlDbType.VarChar).Value = ClassComboBox.SelectionBoxItem.ToString();
+            cmd.Parameters.Add("@RegTime", MySqlDbType.DateTime).Value = DateTime.Now;
             try
             {
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Registered Successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                FirstNameTextBox.Text = "";
+                MiddleNameTextBox.Text = "";
+                LastNameTextBox.Text = "";
+                SchoolComboBox.SelectedIndex = -1;
+                ClassComboBox.SelectedIndex = -1;
             }
             catch (MySqlException ex)
             {

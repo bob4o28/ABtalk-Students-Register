@@ -9,6 +9,8 @@
     <Grid Background="#FFFFFEDA">
         <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="55">
             <!-- Existing content in TopMenu -->
+            <TextBox x:Name="SearchBox" TextWrapping="Wrap" local:TextBoxHelper.Placeholder="Enter student name..." Width="426" HorizontalAlignment="Center" Margin="0,17,0,392" TextChanged="SearchBox_TextChanged" RenderTransformOrigin="0.5,0.534" Height="19"/>
+
         </StackPanel>
         <StackPanel x:Name="RegistrationPanelNames" Margin="10,60,570,0" VerticalAlignment="Top" Height="322">
             <!-- Names of the student -->
@@ -38,6 +40,5 @@
             <!-- GUI -->
 
         </StackPanel>
-        <TextBox x:Name="SearchBox" TextWrapping="Wrap" Text="TextBox" Width="426" HorizontalAlignment="Center" Margin="0,14,0,393" TextChanged="SearchBox_TextChanged" RenderTransformOrigin="0.505,0.612"/>
     </Grid>
 </Window>

@@ -30,4 +30,47 @@ namespace ABtalk_Students_Register
 
         }
     }
+    public class TextBoxHelper
+    {
+        public static readonly DependencyProperty PlaceholderProperty =
+            DependencyProperty.RegisterAttached("Placeholder", typeof(string), typeof(TextBoxHelper), new PropertyMetadata("", OnPlaceholderChanged));
+
+        public static string GetPlaceholder(TextBox textBox)
+        {
+            return (string)textBox.GetValue(PlaceholderProperty);
+        }
+
+        public static void SetPlaceholder(TextBox textBox, string value)
+        {
+            textBox.SetValue(PlaceholderProperty, value);
+        }
+
+        private static void OnPlaceholderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBox textBox)
+            {
+                textBox.GotFocus += (s, ev) =>
+                {
+                    if (textBox.Text == e.NewValue.ToString())
+                    {
+                        textBox.Text = "";
+                        textBox.Foreground = Brushes.Black;
+                    }
+                };
+
+                textBox.LostFocus += (s, ev) =>
+                {
+                    if (string.IsNullOrWhiteSpace(textBox.Text))
+                    {
+                        textBox.Text = e.NewValue.ToString();
+                        textBox.Foreground = Brushes.Gray;
+                    }
+                };
+
+                // Initialize placeholder
+                textBox.Text = e.NewValue.ToString();
+                textBox.Foreground = Brushes.Gray;
+            }
+        }
+    }
 }

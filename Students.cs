@@ -15,5 +15,6 @@ namespace ABtalk_Students_Register
         public string School { get; set; }
         public string Class { get; set; }
         public DateTime RegTime { get; set; }
+        public DateTime? LastTime { get; set; }
     }
 }

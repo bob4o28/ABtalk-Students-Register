@@ -55,6 +55,7 @@
             <!-- DataGrid for search results -->
             <DataGrid x:Name="dgSearchResults" AutoGenerateColumns="False" Margin="10" Height="142">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding idStudents}" Width="35"/>
                     <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
                     <DataGridTextColumn Header="Middle Name" Binding="{Binding MidName}" Width="*"/>
                     <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
@@ -87,8 +88,8 @@
             <TextBlock x:Name="txStatus" HorizontalAlignment="Left" Margin="52,128,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
             <Label Content="Total time:" FontSize="10" HorizontalAlignment="Left" Margin="144,125,0,49" Height="23"/>
             <TextBlock x:Name="txTime" HorizontalAlignment="Left" Margin="204,128,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-            <Button x:Name="btnEndTime" Content="End Time" HorizontalAlignment="Left" Margin="292,127,0,0" VerticalAlignment="Top" BorderBrush="#FFF93E3E" Background="#FFF79E9E"/>
-            <Button x:Name="btnPauseTime" Content="Pause Time" HorizontalAlignment="Left" Margin="363,127,0,0" VerticalAlignment="Top" BorderBrush="#FFE2D07C" Background="#FFE4B484"/>
+            <Button x:Name="btnEndTime" Content="End Time" HorizontalAlignment="Left" Margin="317,127,0,0" VerticalAlignment="Top" BorderBrush="#FFF93E3E" Background="#FFF79E9E" Click="btnEndTime_Click"/>
+            <Button x:Name="btnPauseTime" Content="Pause Time" HorizontalAlignment="Left" Margin="388,127,0,0" VerticalAlignment="Top" BorderBrush="#FFE2D07C" Background="#FFE4B484"/>
         </Grid>
     </Grid>
 </Window>

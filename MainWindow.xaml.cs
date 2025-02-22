@@ -24,6 +24,7 @@ namespace ABtalk_Students_Register
     {
         // Replace this with your actual search results method
         private List<Students> _searchResults = new List<Students>();
+        private Students _selectedStudent;
         public MainWindow()
         {
             InitializeComponent();
@@ -89,7 +90,7 @@ namespace ABtalk_Students_Register
             string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-                string query = "SELECT FirstName, MidName, LastName, School, Class FROM students WHERE LOWER(FirstName) LIKE @searchText OR LOWER(LastName) LIKE @searchText";
+                string query = "SELECT idStudents, FirstName, MidName, LastName, School, Class FROM students WHERE LOWER(FirstName) LIKE @searchText OR LOWER(LastName) LIKE @searchText";
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
 
@@ -101,6 +102,7 @@ namespace ABtalk_Students_Register
                     {
                         _searchResults.Add(new Students
                         {
+                            idStudents = Convert.ToInt32(reader["idStudents"]),
                             FirstName = reader["FirstName"].ToString(),
                             MidName = reader["MidName"].ToString(),
                             LastName = reader["LastName"].ToString(),
@@ -124,8 +126,97 @@ namespace ABtalk_Students_Register
             if (sender is Button button && button.Tag is Students student)
             {
                 // Implement your function logic for 'student'
+                _selectedStudent = student;
+                LoadStudentData(student.idStudents);
+                MessageBox.Show($"FunctionButton_Click called for student ID: {student.idStudents}", "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        private void LoadStudentData(int studentId)
+        {
+            string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM students WHERE idStudents = @idStudents";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@idStudents", studentId);
 
-                MessageBox.Show($"Function executed for {student.FirstName} {student.LastName}.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                {
+                    con.Open();
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        _selectedStudent = new Students
+                        {
+                            idStudents = Convert.ToInt32(reader["idStudents"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            MidName = reader["MidName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            School = reader["School"].ToString(),
+                            Class = reader["Class"].ToString(),
+                            RegTime = Convert.ToDateTime(reader["RegTime"]),
+                            LastTime = reader["LastTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["LastTime"])
+                        };
+
+                        txName.Text = $"{_selectedStudent.FirstName} {_selectedStudent.MidName} {_selectedStudent.LastName}";
+                        txSchool.Text = _selectedStudent.School;
+                        txClass.Text = _selectedStudent.Class;
+                        txID.Text = _selectedStudent.idStudents.ToString();
+                        txStatus.Text = reader["Status"].ToString();
+                        if (_selectedStudent.LastTime.HasValue)
+                        {
+                            TimeSpan timeDifference = _selectedStudent.LastTime.Value - _selectedStudent.RegTime;
+                            txTime.Text = $"{timeDifference.Hours} hours {timeDifference.Minutes} minutes";
+                        }
+                        else
+                        {
+                            txTime.Text = "N/A";
+                        }
+                    }
+                    reader.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error retrieving data from database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void btnEndTime_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedStudent == null)
+            {
+                MessageBox.Show("No student selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = "UPDATE students SET LastTime = @LastTime, InTime = @InTime, Status = @Status WHERE idStudents = @idStudents";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                DateTime leaveTime = DateTime.Now;
+                TimeSpan timeDifference = leaveTime - _selectedStudent.RegTime;
+                string status = "Left";
+
+                cmd.Parameters.AddWithValue("@LastTime", leaveTime);
+                cmd.Parameters.AddWithValue("@InTime", timeDifference.TotalMinutes);
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@idStudents", _selectedStudent.idStudents);
+
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    _selectedStudent.LastTime = leaveTime;
+                    txStatus.Text = status;
+                    txTime.Text = $"{timeDifference.Hours} hours {timeDifference.Minutes} minutes";
+                    MessageBox.Show("Leave time and status updated successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error updating leave time and status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

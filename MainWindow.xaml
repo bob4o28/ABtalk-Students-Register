@@ -13,7 +13,7 @@
             <!-- Existing content in TopMenu -->
             <TextBox x:Name="SearchBox" TextWrapping="Wrap" local:TextBoxHelper.Placeholder="Enter student name..." Width="426" Margin="0,17,0,0" Height="19" HorizontalAlignment="Center"/>
             <Button x:Name="SearchButton" Width="40" Height="40" Margin="5,7,0,0"
-                    Background="Transparent" BorderBrush="Transparent">
+                    Background="Transparent" BorderBrush="Transparent" Click="SearchButton_Click">
                 <Image Source="/Very-Basic-Search-icon.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0"/>
             </Button>
         </StackPanel>
@@ -56,16 +56,15 @@
             <DataGrid x:Name="dgSearchResults" AutoGenerateColumns="False" Margin="10" Height="142">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
-                    <DataGridTextColumn Header="Middle Name" Binding="{Binding MiddleName}" Width="*"/>
+                    <DataGridTextColumn Header="Middle Name" Binding="{Binding MidName}" Width="*"/>
                     <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
                     <DataGridTextColumn Header="School" Binding="{Binding School}" Width="*"/>
                     <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="*"/>
-                    <DataGridTemplateColumn Header="Action" Width="150">
+                    <DataGridTemplateColumn Header="Action" Width="70">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="Pause" Click="PauseButton_Click" Tag="{Binding}" Margin="2"/>
-                                    <Button Content="End Time" Click="EndTimeButton_Click" Tag="{Binding}" Margin="2"/>
+                                    <Button Content="Function" Click="FunctionButton_Click" Tag="{Binding}" Margin="2"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

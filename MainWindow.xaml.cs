@@ -22,9 +22,14 @@ namespace ABtalk_Students_Register
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Replace this with your actual search results method
+        private List<Students> _searchResults = new List<Students>();
         public MainWindow()
         {
             InitializeComponent();
+            // For demonstration, load some dummy data:
+            //LoadDummyData();
+            dgSearchResults.ItemsSource = _searchResults;
         }
 
         private void BtnCancle_Click(object sender, RoutedEventArgs e)
@@ -70,11 +75,60 @@ namespace ABtalk_Students_Register
             }
             con.Close();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchBox.Text.ToLower();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                MessageBox.Show("Please enter a search term.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            _searchResults.Clear();
+            string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT FirstName, MidName, LastName, School, Class FROM students WHERE LOWER(FirstName) LIKE @searchText OR LOWER(LastName) LIKE @searchText";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                try
+                {
+                    con.Open();
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        _searchResults.Add(new Students
+                        {
+                            FirstName = reader["FirstName"].ToString(),
+                            MidName = reader["MidName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            School = reader["School"].ToString(),
+                            Class = reader["Class"].ToString()
+                        });
+                    }
+                    reader.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error retrieving data from database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            dgSearchResults.Items.Refresh();
+        }
+
+        private void FunctionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Students student)
+            {
+                // Implement your function logic for 'student'
+                MessageBox.Show($"Function executed for {student.FirstName} {student.LastName}.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
     }
-
-
-
-
+    
     ///Textbox Helper Class for gray label text
     public class TextBoxHelper
     {
@@ -119,4 +173,17 @@ namespace ABtalk_Students_Register
             }
         }
     }
+
+
+    //public class student
+    //{
+    //    public int idstudents { get; set; }
+    //    public string firstname { get; set; }
+    //    public string midname { get; set; }
+    //    public string lastname { get; set; }
+    //    public string school { get; set; }
+    //    public string class { get; set; }
+    //    public datetime regtime { get; set; }
+    //}
+
 }

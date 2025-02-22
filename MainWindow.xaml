@@ -48,7 +48,7 @@
                 <ComboBoxItem Content="12"/>
             </ComboBox>
             <Button x:Name="btnCancle" Content="Cancle" Width="84" HorizontalAlignment="Left" Margin="9,10,0,0" Click="BtnCancle_Click"/>
-            <Button x:Name="btnSave" Content="Save" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0" Click="btnSave_Click"/>
+            <Button x:Name="btnSave" Content="Save" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0" Click="btnSave_Click" Background="#FFC3E886"/>
             <!-- GUI -->
         </StackPanel>
         <StackPanel Margin="235,60,10,217">
@@ -72,5 +72,23 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
+        <Grid HorizontalAlignment="Left" Height="197" Margin="235,227,0,0" VerticalAlignment="Top" Width="555" Background="#FFFFF7A5">
+
+            <Label Content="Student:" HorizontalAlignment="Left" Margin="10,7,0,164" Height="26"/>
+            <Label Content="Name:" FontSize="10" HorizontalAlignment="Left" Margin="10,33,0,141" Height="23"/>
+            <Label Content="School:" FontSize="10" HorizontalAlignment="Left" Margin="10,56,0,118" Height="23"/>
+            <Label Content="Class:" FontSize="10" HorizontalAlignment="Left" Margin="10,79,0,95" Height="23"/>
+            <Label Content="ID:" FontSize="10" HorizontalAlignment="Left" Margin="9,102,0,72" Height="23"/>
+            <TextBlock x:Name="txName" HorizontalAlignment="Left" Margin="52,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="txSchool" HorizontalAlignment="Left" Margin="52,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBlock x:Name="txClass" HorizontalAlignment="Left" Margin="52,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="txID" HorizontalAlignment="Left" Margin="52,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <Label Content="Status:" FontSize="10" HorizontalAlignment="Left" Margin="10,125,0,49" Height="23"/>
+            <TextBlock x:Name="txStatus" HorizontalAlignment="Left" Margin="52,128,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+            <Label Content="Total time:" FontSize="10" HorizontalAlignment="Left" Margin="144,125,0,49" Height="23"/>
+            <TextBlock x:Name="txTime" HorizontalAlignment="Left" Margin="204,128,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+            <Button x:Name="btnEndTime" Content="End Time" HorizontalAlignment="Left" Margin="292,127,0,0" VerticalAlignment="Top" BorderBrush="#FFF93E3E" Background="#FFF79E9E"/>
+            <Button x:Name="btnPauseTime" Content="Pause Time" HorizontalAlignment="Left" Margin="363,127,0,0" VerticalAlignment="Top" BorderBrush="#FFE2D07C" Background="#FFE4B484"/>
+        </Grid>
     </Grid>
 </Window>

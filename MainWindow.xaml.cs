@@ -124,11 +124,12 @@ namespace ABtalk_Students_Register
             if (sender is Button button && button.Tag is Students student)
             {
                 // Implement your function logic for 'student'
+
                 MessageBox.Show($"Function executed for {student.FirstName} {student.LastName}.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }
-    
+
     ///Textbox Helper Class for gray label text
     public class TextBoxHelper
     {

@@ -7,10 +7,15 @@
         mc:Ignorable="d"
         Title="StudentRegister" Height="450" Width="800">
     <Grid Background="#FFFFFEDA">
-        <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="55">
+        <StackPanel x:Name="TopMenu" Background="#FFECD019" VerticalAlignment="Top" Height="55" Orientation="Horizontal">
             <!-- Existing content in TopMenu -->
-            <TextBox x:Name="SearchBox" TextWrapping="Wrap" local:TextBoxHelper.Placeholder="Enter student name..." Width="426" HorizontalAlignment="Center" Margin="0,17,0,392" RenderTransformOrigin="0.5,0.534" Height="19"/>
-
+            <Border BorderBrush="Black" Width="215" Height="47"/>
+            <!-- Existing content in TopMenu -->
+            <TextBox x:Name="SearchBox" TextWrapping="Wrap" local:TextBoxHelper.Placeholder="Enter student name..." Width="426" Margin="0,17,0,0" Height="19" HorizontalAlignment="Center"/>
+            <Button x:Name="SearchButton" Width="40" Height="40" Margin="5,7,0,0"
+                    Background="Transparent" BorderBrush="Transparent">
+                <Image Source="/Very-Basic-Search-icon.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0"/>
+            </Button>
         </StackPanel>
         <StackPanel x:Name="RegistrationPanelNames" Margin="10,60,570,0" VerticalAlignment="Top" Height="322">
             <!-- Names of the student -->
@@ -42,10 +47,31 @@
                 <ComboBoxItem Content="11"/>
                 <ComboBoxItem Content="12"/>
             </ComboBox>
-            <Button x:Name="btnCancle" Content="Cancle" Width="84" HorizontalAlignment="Left" Margin="9,10,0,0" Click="btnCancle_Click"/>
+            <Button x:Name="btnCancle" Content="Cancle" Width="84" HorizontalAlignment="Left" Margin="9,10,0,0" Click="BtnCancle_Click"/>
             <Button x:Name="btnSave" Content="Save" Width="84" HorizontalAlignment="Left" Margin="108,-19,0,0" Click="btnSave_Click"/>
             <!-- GUI -->
-
+        </StackPanel>
+        <StackPanel Margin="235,60,10,217">
+            <!-- DataGrid for search results -->
+            <DataGrid x:Name="dgSearchResults" AutoGenerateColumns="False" Margin="10" Height="142">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
+                    <DataGridTextColumn Header="Middle Name" Binding="{Binding MiddleName}" Width="*"/>
+                    <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
+                    <DataGridTextColumn Header="School" Binding="{Binding School}" Width="*"/>
+                    <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="*"/>
+                    <DataGridTemplateColumn Header="Action" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Pause" Click="PauseButton_Click" Tag="{Binding}" Margin="2"/>
+                                    <Button Content="End Time" Click="EndTimeButton_Click" Tag="{Binding}" Margin="2"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>

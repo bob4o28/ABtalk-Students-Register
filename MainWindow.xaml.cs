@@ -27,7 +27,7 @@ namespace ABtalk_Students_Register
             InitializeComponent();
         }
 
-        private void btnCancle_Click(object sender, RoutedEventArgs e)
+        private void BtnCancle_Click(object sender, RoutedEventArgs e)
         {
             FirstNameTextBox.Text = "";
             MiddleNameTextBox.Text = "";
@@ -75,7 +75,7 @@ namespace ABtalk_Students_Register
 
 
 
-    //Textbox Helper Class for gray label text
+    ///Textbox Helper Class for gray label text
     public class TextBoxHelper
     {
         public static readonly DependencyProperty PlaceholderProperty =

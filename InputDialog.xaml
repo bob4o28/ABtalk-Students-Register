@@ -1,0 +1,10 @@
+﻿<Window x:Class="ABtalk_Students_Register.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="InputDialog" Height="150" Width="300">
+    <Grid>
+        <Label Content="{Binding Message}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+        <TextBox x:Name="ResponseTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,0,0" Width="260"/>
+        <Button Content="OK" Width="75" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Click="OkButton_Click"/>
+    </Grid>
+</Window>

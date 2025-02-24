@@ -38,8 +38,11 @@ namespace ABtalk_Students_Register
             FirstNameTextBox.Text = "";
             MiddleNameTextBox.Text = "";
             LastNameTextBox.Text = "";
+            EmailTextBox.Text = "";
             SchoolComboBox.SelectedIndex = -1;
             ClassComboBox.SelectedIndex = -1;
+            ClassLetterComboBox.SelectedIndex = -1;
+            
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -49,17 +52,20 @@ namespace ABtalk_Students_Register
                 MessageBox.Show("Please fill all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            string sql = "INSERT INTO students(FirstName, MidName, LastName, School, Class, RegTime) VALUES (@FirstName, @MidName, @LastName, @School, @Class, @RegTime)";
+            string sql = "INSERT INTO students(FirstName, MidName, LastName, Email, School, Class, ClassLetter, RegTime, PauseTime, PauseLast) VALUES (@FirstName, @MidName, @LastName, @Email, @School, @Class, @ClassLetter, @RegTime, @PauseTime, @PauseLast)";
             MySqlConnection con = dbABtalk.GetConnection();
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.CommandType = CommandType.Text;
-            //cmd.Parameters.Add("@idStudents", MySqlDbType.Int32).Value = null;
             cmd.Parameters.Add("@FirstName", MySqlDbType.VarChar).Value = FirstNameTextBox.Text;
             cmd.Parameters.Add("@MidName", MySqlDbType.VarChar).Value = MiddleNameTextBox.Text;
             cmd.Parameters.Add("@LastName", MySqlDbType.VarChar).Value = LastNameTextBox.Text;
+            cmd.Parameters.Add("@Email", MySqlDbType.VarChar).Value = EmailTextBox.Text;
             cmd.Parameters.Add("@School", MySqlDbType.VarChar).Value = SchoolComboBox.SelectionBoxItem.ToString();
             cmd.Parameters.Add("@Class", MySqlDbType.VarChar).Value = ClassComboBox.SelectionBoxItem.ToString();
+            cmd.Parameters.Add("@ClassLetter", MySqlDbType.VarChar).Value = ClassLetterComboBox.SelectionBoxItem.ToString();
             cmd.Parameters.Add("@RegTime", MySqlDbType.DateTime).Value = DateTime.Now;
+            cmd.Parameters.Add("@PauseTime", MySqlDbType.DateTime).Value = DateTime.MinValue;
+            cmd.Parameters.Add("@PauseLast", MySqlDbType.DateTime).Value = DateTime.MinValue;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -67,8 +73,10 @@ namespace ABtalk_Students_Register
                 FirstNameTextBox.Text = "";
                 MiddleNameTextBox.Text = "";
                 LastNameTextBox.Text = "";
+                EmailTextBox.Text = "";
                 SchoolComboBox.SelectedIndex = -1;
                 ClassComboBox.SelectedIndex = -1;
+                ClassLetterComboBox.SelectedIndex = -1;
             }
             catch (MySqlException ex)
             {
@@ -90,7 +98,7 @@ namespace ABtalk_Students_Register
             string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-                string query = "SELECT idStudents, FirstName, MidName, LastName, School, Class FROM students WHERE LOWER(FirstName) LIKE @searchText OR LOWER(LastName) LIKE @searchText";
+                string query = "SELECT idStudents, FirstName, MidName, LastName, School, Class, ClassLetter FROM students WHERE LOWER(FirstName) LIKE @searchText OR LOWER(LastName) LIKE @searchText";
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
 
@@ -107,7 +115,8 @@ namespace ABtalk_Students_Register
                             MidName = reader["MidName"].ToString(),
                             LastName = reader["LastName"].ToString(),
                             School = reader["School"].ToString(),
-                            Class = reader["Class"].ToString()
+                            Class = reader["Class"].ToString(),
+                            ClassLetter = reader["ClassLetter"].ToString()
                         });
                     }
                     reader.Close();
@@ -128,7 +137,7 @@ namespace ABtalk_Students_Register
                 // Implement your function logic for 'student'
                 _selectedStudent = student;
                 LoadStudentData(student.idStudents);
-                MessageBox.Show($"FunctionButton_Click called for student ID: {student.idStudents}", "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show($"FunctionButton_Click called for student ID: {student.idStudents}", "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         private void LoadStudentData(int studentId)
@@ -154,8 +163,12 @@ namespace ABtalk_Students_Register
                             LastName = reader["LastName"].ToString(),
                             School = reader["School"].ToString(),
                             Class = reader["Class"].ToString(),
-                            RegTime = Convert.ToDateTime(reader["RegTime"]),
-                            LastTime = reader["LastTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["LastTime"])
+                            ClassLetter = reader["ClassLetter"].ToString(),
+                            RegTime = reader["RegTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["RegTime"]),
+                            LastTime = reader["LastTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["LastTime"]),
+                            PauseTime = reader["PauseTime"] == DBNull.Value ? (DateTime?)null : (reader["PauseTime"] is TimeSpan ? DateTime.MinValue.Add((TimeSpan)reader["PauseTime"]) : Convert.ToDateTime(reader["PauseTime"])),
+                            PauseLast = reader["PauseLast"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PauseLast"]),
+                            Status = reader["Status"].ToString()
                         };
 
                         txName.Text = $"{_selectedStudent.FirstName} {_selectedStudent.MidName} {_selectedStudent.LastName}";
@@ -180,6 +193,14 @@ namespace ABtalk_Students_Register
                     MessageBox.Show("Error retrieving data from database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            if (_selectedStudent.Status == "Pause")
+            {
+                btnPauseTime.Content = "Resume Time";
+            }
+            else
+            {
+                btnPauseTime.Content = "Pause Time";
+            }
         }
 
         private void btnEndTime_Click(object sender, RoutedEventArgs e)
@@ -197,10 +218,14 @@ namespace ABtalk_Students_Register
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 DateTime leaveTime = DateTime.Now;
                 TimeSpan timeDifference = leaveTime - _selectedStudent.RegTime;
+                DateTime NullTime = DateTime.MinValue;
+                //TimeSpan totalPauseTime = _selectedStudent.PauseTime.HasValue ? (_selectedStudent.PauseTime.Value - NullTime) : TimeSpan.Zero;
+                DateTime TimeDiff = DateTime.MinValue + timeDifference;
+                TimeSpan totalTime = TimeDiff - _selectedStudent.PauseTime.Value;
                 string status = "Left";
 
                 cmd.Parameters.AddWithValue("@LastTime", leaveTime);
-                cmd.Parameters.AddWithValue("@InTime", timeDifference.TotalMinutes);
+                cmd.Parameters.AddWithValue("@InTime", totalTime.TotalMinutes);
                 cmd.Parameters.AddWithValue("@Status", status);
                 cmd.Parameters.AddWithValue("@idStudents", _selectedStudent.idStudents);
 
@@ -210,12 +235,117 @@ namespace ABtalk_Students_Register
                     cmd.ExecuteNonQuery();
                     _selectedStudent.LastTime = leaveTime;
                     txStatus.Text = status;
-                    txTime.Text = $"{timeDifference.Hours} hours {timeDifference.Minutes} minutes";
+                    txTime.Text = $"{totalTime.Hours} hours {totalTime.Minutes} minutes";
                     MessageBox.Show("Leave time and status updated successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (MySqlException ex)
                 {
                     MessageBox.Show("Error updating leave time and status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SchoolComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SchoolComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Content.ToString() == "Other")
+            {
+                string newSchool = PromptForNewValue("Enter new school name:");
+                if (!string.IsNullOrEmpty(newSchool))
+                {
+                    SchoolComboBox.Items.Insert(SchoolComboBox.Items.Count - 1, new ComboBoxItem { Content = newSchool });
+                    SchoolComboBox.SelectedItem = SchoolComboBox.Items[SchoolComboBox.Items.Count - 2];
+                }
+                else
+                {
+                    SchoolComboBox.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private string PromptForNewValue(string message)
+        {
+            InputDialog inputDialog = new InputDialog(message);
+            if (inputDialog.ShowDialog() == true)
+            {
+                return inputDialog.ResponseText;
+            }
+            return null;
+        }
+
+        private void ClassLetterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ClassLetterComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Content.ToString() == "Other")
+            {
+                string newClassLetter = PromptForNewValue("Enter new Class Letter:");
+                if (!string.IsNullOrEmpty(newClassLetter))
+                {
+                    ClassLetterComboBox.Items.Insert(ClassLetterComboBox.Items.Count - 1, new ComboBoxItem { Content = newClassLetter });
+                    ClassLetterComboBox.SelectedItem = ClassLetterComboBox.Items[ClassLetterComboBox.Items.Count - 2];
+                }
+                else
+                {
+                    ClassLetterComboBox.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private void btnPauseTime_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedStudent == null)
+            {
+                MessageBox.Show("No student selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string connectionString = "datasource=localhost;port=3306;username=root;password=MySQL.bg.bobo_09!;database=abtalk"; // Replace with your actual connection string
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                
+                if (_selectedStudent.Status == "Registered")
+                {
+                    string query = "UPDATE students SET PauseLast = @PauseLast, Status = @Status WHERE idStudents = @idStudents";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    DateTime PauseTimeNow = DateTime.Now;
+                    string status = "Pause";
+                    cmd.Parameters.AddWithValue("@PauseLast", PauseTimeNow);
+                    cmd.Parameters.AddWithValue("@Status", status);
+                    cmd.Parameters.AddWithValue("@idStudents", _selectedStudent.idStudents);
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        txStatus.Text = status;
+                        btnPauseTime.Content = "Resume Time";
+                        MessageBox.Show("Pause time and status updated successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show("Error updating pause time and status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else if (_selectedStudent.Status == "Pause")
+                {
+                    string query = "UPDATE students SET PauseTime = @PauseTime, Status = @Status WHERE idStudents = @idStudents";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    DateTime PauseTimeNow = DateTime.Now;
+                    TimeSpan timeDifference = PauseTimeNow - _selectedStudent.PauseLast.Value;
+                    TimeSpan totalTime = timeDifference;
+                    string status = "Registered";
+                    cmd.Parameters.AddWithValue("@PauseTime", totalTime.TotalMinutes);
+                    cmd.Parameters.AddWithValue("@Status", status);
+                    cmd.Parameters.AddWithValue("@idStudents", _selectedStudent.idStudents);
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        txStatus.Text = status;
+                        btnPauseTime.Content = "Pause Time";
+                        MessageBox.Show("Pause time and status updated successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show("Error updating pause time and status: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }

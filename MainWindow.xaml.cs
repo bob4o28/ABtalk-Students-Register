@@ -63,7 +63,7 @@ namespace ABtalk_Students_Register
             cmd.Parameters.Add("@School", MySqlDbType.VarChar).Value = SchoolComboBox.SelectionBoxItem.ToString();
             cmd.Parameters.Add("@Class", MySqlDbType.VarChar).Value = ClassComboBox.SelectionBoxItem.ToString();
             cmd.Parameters.Add("@ClassLetter", MySqlDbType.VarChar).Value = ClassLetterComboBox.SelectionBoxItem.ToString();
-            cmd.Parameters.Add("@RegTime", MySqlDbType.DateTime).Value = DateTime.Now;
+            cmd.Parameters.Add("@RegTime", MySqlDbType.DateTime).Value = new DateTime(2025, 2, 24, 9, 34, 1);
             cmd.Parameters.Add("@PauseTime", MySqlDbType.DateTime).Value = DateTime.MinValue;
             cmd.Parameters.Add("@PauseLast", MySqlDbType.DateTime).Value = DateTime.MinValue;
             try
